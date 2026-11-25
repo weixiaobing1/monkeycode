@@ -1,32 +1,27 @@
+<div align="center">
+
 # MonkeyCode
 
-一个使用 Python 实现、面向本地开发工作流的终端 AI 编程助手。
+**面向本地开发工作流的终端 AI 编程助手**
 
-MonkeyCode 拥有独立的 Agent Runtime，可以检查工作区、调用工具、修改代码、运行命令，并通过权限系统控制有副作用的操作。它保留了类 Claude Code 工作流中最有价值的部分，同时提供子 Agent、后台任务、Git worktree 隔离、Skills、MCP 和 Hooks 等扩展能力。
+在终端里读代码、改代码、运行测试，用权限规则控制工具操作，用 Git worktree 隔离子任务。
+
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white) ![MCP](https://img.shields.io/badge/MCP-stdio%20%7C%20HTTP-6B46C1?style=flat-square) ![Git worktree](https://img.shields.io/badge/Git-worktree-F05032?style=flat-square&logo=git&logoColor=white) ![OpenAI and Anthropic compatible](https://img.shields.io/badge/API-OpenAI%20%7C%20Anthropic-334155?style=flat-square)
+
+[安装](#安装) · [快速开始](#快速开始) · [架构概览](#架构概览) · [相关开源项目](#相关开源项目)
+
+</div>
 
 ## 项目简介
 
-MonkeyCode 围绕一个 terminal-first Agent Loop 构建：
+MonkeyCode 用 Python 实现了独立的 Agent Runtime，涵盖模型调用、上下文管理、工具调度、权限、会话和记忆。它可以在一次任务中多轮调用工具，并通过 Skills、MCP 和 Hooks 扩展工作流，无需 LangChain 或 LangGraph。
 
-1. 接收用户目标。
-2. 加载项目指令、会话和长期记忆。
-3. 让模型检查工作区并选择工具。
-4. 在权限系统约束下执行操作。
-5. 将工具结果返回模型并继续推进。
-6. 完成任务，或在需要决策时交还用户。
-
-项目不依赖 LangChain 或 LangGraph。Provider、上下文管理、工具调度、权限、会话、记忆和终端交互均由 MonkeyCode 自己实现，适合研究和定制 coding agent 的完整运行链路。
-
-## 为什么选择 MonkeyCode
-
-MonkeyCode 适合以下场景：
-
-- 希望使用一个本地运行、终端优先的 coding agent。
-- 需要明确的工作区沙箱和权限审批，而不是默认放开所有操作。
-- 希望把复杂任务交给同步或后台子 Agent。
-- 需要用 Git worktree 隔离子任务，避免污染主工作区。
-- 想通过 `SKILL.md`、MCP 和 Hooks 扩展工作流。
-- 想研究一个不依赖重型 Agent 框架的 Python 实现。
+| 开发场景 | MonkeyCode 提供的能力 |
+| --- | --- |
+| 先调查，再动手 | 用 Plan 模式阅读和搜索代码，再进入 Execute 执行确认的计划 |
+| 并行处理子任务 | 启动前台或后台子 Agent，并用 Git worktree 隔离各自的修改 |
+| 接入项目工具 | 通过 MCP 注册外部工具，用 Skills 和 Hooks 加入项目约定 |
+| 继续长任务 | 恢复历史会话、压缩上下文并保留长期记忆 |
 
 ## 核心能力
 
@@ -435,6 +430,16 @@ python -m compileall -q monkeycode tests
 - MCP 当前以工具接入为主，不支持 Resources、Prompts 和 Sampling。
 - 没有内置浏览器、网络搜索、向量索引或代码语义索引。
 - worktree 隔离依赖 Git，非 Git 项目无法使用。
+
+## 相关开源项目
+
+这些上游项目适合进一步了解终端 Agent、工具接入和长期记忆。
+
+| 项目 | 方向 | 可以从这里了解 |
+| --- | --- | --- |
+| [OpenAI Codex](https://github.com/openai/codex) | 终端编码 Agent | 终端交互、命令执行和权限审批 |
+| [MCP Reference Servers](https://github.com/modelcontextprotocol/servers) | 工具协议与参考实现 | MCP 服务端如何公开工具，以及参考服务如何组织 |
+| [TencentDB Agent Memory](https://github.com/TencentCloud/TencentDB-Agent-Memory) | 团队级 Agent 记忆 | 对话、文档和代码如何沉淀为可共享的记忆资产 |
 
 ## License
 
